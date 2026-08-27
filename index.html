@@ -7,8 +7,13 @@
       body {
         margin: 0;
         background-color: #f3e8d0;
-        font-family: font-family: Cambria, serif;
+        font-family: Cambria, serif;
         color: #333;
+
+        /* Keeps footer at the bottom */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
       }
 
       header {
@@ -37,7 +42,12 @@
       main {
         padding: 30px;
         max-width: 1000px;
+        width: 100%;
+        box-sizing: border-box;
         margin: auto;
+
+        /* Pushes footer to the bottom */
+        flex: 1;
       }
 
       .database-box {
@@ -57,6 +67,10 @@
         text-align: center;
         padding: 15px;
         margin-top: 40px;
+      }
+
+      footer p {
+        margin: 0;
       }
     </style>
   </head>
