@@ -10,7 +10,6 @@
         font-family: Cambria, serif;
         color: #333;
 
-        /* Keeps footer at the bottom */
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -29,14 +28,20 @@
 
       nav {
         background-color: #0f3828;
-        padding: 12px;
-        text-align: center;
+        padding: 15px;
+        display: flex;
+        justify-content: center;
+        gap: 60px;
       }
 
       nav a {
         color: white;
         text-decoration: none;
-        margin: 0 15px;
+        font-size: 17px;
+      }
+
+      nav a:hover {
+        text-decoration: underline;
       }
 
       main {
@@ -45,8 +50,6 @@
         width: 100%;
         box-sizing: border-box;
         margin: auto;
-
-        /* Pushes footer to the bottom */
         flex: 1;
       }
 
@@ -58,6 +61,19 @@
       }
 
       .database-box h2 {
+        color: #164a35;
+      }
+
+      .client {
+        background-color: white;
+        padding: 15px;
+        margin-top: 15px;
+        border-left: 5px solid #164a35;
+        border-radius: 5px;
+      }
+
+      .client h3 {
+        margin-top: 0;
         color: #164a35;
       }
 
@@ -92,7 +108,9 @@
       <div class="database-box">
         <h2>Database</h2>
 
-        <!-- Database content can go here -->
+        <div id="client-list">
+          Loading...
+        </div>
 
       </div>
     </main>
@@ -100,6 +118,60 @@
     <footer>
       <p>&copy; Beyond Quest Recruitment Inc</p>
     </footer>
+
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      const SUPABASE_URL =
+        "https://vgzdvjtuxkjxyobsecvn.supabase.co";
+
+      const SUPABASE_KEY =
+        "YOUR_PUBLISHABLE_KEY_HERE";
+
+      const supabase = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+      async function loadClients() {
+
+        const { data, error } = await supabase
+          .from("clients")
+          .select("*");
+
+        if (error) {
+          console.error("Supabase error:", error);
+
+          document.getElementById("client-list").innerHTML =
+            "<p>Unable to load database.</p>";
+
+          return;
+        }
+
+
+        const clientList =
+          document.getElementById("client-list");
+
+
+        clientList.innerHTML = data.map(client => `
+          <div class="client">
+
+            <h3>${client.name}</h3>
+
+            <p>
+              ${client.description || ""}
+            </p>
+
+          </div>
+        `).join("");
+      }
+
+
+      loadClients();
+    </script>
 
   </body>
 </html>
